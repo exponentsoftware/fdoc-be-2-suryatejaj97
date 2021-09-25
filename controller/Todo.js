@@ -28,10 +28,7 @@ exports.addTodo = async (req, res) => {
 //Get All Todo and also filetr by query
 
 exports.getAllTodo = async (req, res) => {
-  // Get all Todo 
   const todo = await Todo.find().sort({ createdAt: -1 });
-
-  //check todo data found or Not
   if (todo.length == 0) {
     res.status(404).json({
       success: false,
@@ -49,8 +46,8 @@ exports.getAllTodo = async (req, res) => {
     req.query[key] == "true" ? (req.query[key] = true) : "";
     req.query[key] == "false" ? (req.query[key] = false) : "";
 
-    const response = await todo.filter((ele) => {
-      return ele[key] == req.query[key];
+    const response = await todo.filter((element) => {
+      return element[key] == req.query[key];
     });
     if (response.length <= 0) {
       res.status(404).json({
@@ -59,13 +56,10 @@ exports.getAllTodo = async (req, res) => {
         todo: response,
       });
     }
-    //Filterd data response
     res
       .status(200)
       .json({ success: true, message: `All ${key} of Todo`, todo: response });
   } else {
-    //respose all todo whithout filtering route
-
     res.status(200).json({ success: true, message: "All Todo", todo });
   }
 };
@@ -85,7 +79,6 @@ exports.getTodoById = async (req, res) => {
 
     res.status(200).json({ success: true, todo });
   } catch (err) {
-    // console.log(err);
     res.status(404).json({ success: false, message: "data not found", err });
   }
 };
